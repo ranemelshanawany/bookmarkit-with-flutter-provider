@@ -1,8 +1,9 @@
 class Bookmark
 {
-  String _title;
-  String _description;
-  String _link;
+  String title;
+  String description;
+  String imageName;
+  //String link;
 
-  Bookmark(this._title, this._description, this._link);
+  Bookmark(this.title, this.description, this.imageName);
 }
