@@ -19,11 +19,18 @@ class MyData {
     "description4 description4 description4 description4 ",
     "description4 description4 description4 description4 ",
     "description4 description4 description4 description4 "];
-  //static var link = ["https://observer.com/2020/04/community-dan-harmon-netflix-movie-sixseasonsandamovie-campaign/", "14 min read", "8 min read", "8 min read"];
+  static var link = ["https://observer.com/2020/04/community-dan-harmon-netflix-movie-sixseasonsandamovie-campaign/",
+    "https://www.goodnewsnetwork.org/satellites-find-20pt-more-emperor-penguin-colonies-in-antarctica/",
+    "https://www.goodnewsnetwork.org/chernobyl-fungus-grown-on-rockets-may-protect-astronauts/",
+    "https://www.google.com.sa/",
+    "https://www.google.com.sa/",
+    "https://www.google.com.sa/",
+    "https://www.google.com.sa/",
+    "https://www.google.com.sa/"];
   static var imageName = ["image1.jpeg","image2.jpeg","image3.jpeg","image4.jpeg","image4.jpeg","image4.jpeg","image4.jpeg","image4.jpeg"];
 
   static getBookmark(int position) {
-    return Bookmark(titles[position], description[position], imageName[position]);
+    return Bookmark(titles[position], description[position], imageName[position], link[position]);
   }
 
 }

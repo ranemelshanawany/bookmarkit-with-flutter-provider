@@ -3,7 +3,7 @@ class Bookmark
   String title;
   String description;
   String imageName;
-  //String link;
+  String link;
 
-  Bookmark(this.title, this.description, this.imageName);
+  Bookmark(this.title, this.description, this.imageName, this.link);
 }

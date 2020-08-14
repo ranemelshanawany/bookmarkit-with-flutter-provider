@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'bookmark_class.dart';
 import 'data.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -28,9 +30,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < MyData.count; i++) {
-      bookmarkList[i] = MyData.getBookmark(i);
-    }
+
+    makeBookmarkList();
 
     return ListView.builder(
       itemCount: bookmarkList.length,
@@ -40,12 +41,7 @@ class _HomePageState extends State<HomePage> {
           child: Card(
               child: InkWell(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailScreen(bookmark: bookmarkList[index]),
-                    ),
-                  );
+                  _launchURL(bookmarkList[index].link);
                 },
                 child: IntrinsicHeight(
                   child: Row(
@@ -87,31 +83,20 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
+
   }
-}
+  makeBookmarkList()
+  {
+    for (int i = 0; i < MyData.count; i++) {
+      bookmarkList[i] = MyData.getBookmark(i);
+    }
+  }
 
-class DetailScreen extends StatelessWidget {
-  // Declare a field that holds the Todo.
-  final Bookmark bookmark;
-
-  // In the constructor, require a Todo.
-  DetailScreen({Key key, @required this.bookmark}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // Use the Todo to create the UI.
-    return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            Text(bookmark.title, style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
-            SizedBox(height: 20,),
-            Text(bookmark.description, style: TextStyle(fontSize: 20),),
-          ],
-        ),
-      ),
-    );
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
