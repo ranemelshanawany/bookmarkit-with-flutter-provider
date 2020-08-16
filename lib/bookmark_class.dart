@@ -10,7 +10,6 @@ class Bookmark
 
   Bookmark.fromJson(Map<String, dynamic> json)
   {
-
     title= json['title'];
     description= json['description'];
     url= json['url'];
