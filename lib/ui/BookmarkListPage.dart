@@ -1,6 +1,7 @@
+import 'package:bookmark_list_app/BookmarkProvider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../data/BookmarkAPI.dart';
+import 'package:provider/provider.dart';
 import 'DetailsScreen.dart';
 import '../data/bookmark.dart';
 
@@ -10,16 +11,14 @@ class BookmarkListPage extends StatefulWidget {
 }
 
 class _BookmarkListPageState extends State<BookmarkListPage> {
-
   List<Bookmark> _bookmarks = List<Bookmark>();
   bool dataLoaded = false;
 
   @override
   Widget build(BuildContext context) {
-    if (!dataLoaded)
-      {
-        return Center(child: CircularProgressIndicator());
-      }
+    if (!dataLoaded) {
+      return Center(child: CircularProgressIndicator());
+    }
 
     return ListView.builder(
       itemCount: _bookmarks == null ? 0 : _bookmarks.length,
@@ -32,7 +31,10 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
   @override
   void initState() {
     super.initState();
-    BookmarksAPI().fetchBookmark().then((value) {
+
+    Provider.of<BookmarkProvider>(context, listen: false)
+        .fetchBookmark()
+        .then((value) {
       setState(() {
         _bookmarks.addAll(value);
         dataLoaded = true;
@@ -40,28 +42,28 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
     });
   }
 
-  _buildListItem(int index)
-  {
+  _buildListItem(int index) {
     return Container(
       height: 200,
       child: Card(
           child: InkWell(
-            onTap: () {openNewsPage(index);},
-            child: IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  _buildText(index),
-                  _buildImage(index),
-                ],
-              ),
-            ),
-          )),
+        onTap: () {
+          openNewsPage(index);
+        },
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              _buildText(index),
+              _buildImage(index),
+            ],
+          ),
+        ),
+      )),
     );
   }
 
-  _buildText(int index)
-  {
+  _buildText(int index) {
     return Expanded(
       child: Container(
         padding: EdgeInsets.all(12),
@@ -98,9 +100,9 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
         padding: EdgeInsets.only(right: 12, top: 8, bottom: 8),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: Image.network(_bookmarks[index].urlToImage, width: 150, height: 150, fit: BoxFit.cover),
-        )
-    );
+          child: Image.network(_bookmarks[index].urlToImage,
+              width: 150, height: 150, fit: BoxFit.cover),
+        ));
   }
 
   openNewsPage(int index) {
@@ -110,5 +112,10 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
         builder: (context) => DetailScreen(bookmark: _bookmarks[index]),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
