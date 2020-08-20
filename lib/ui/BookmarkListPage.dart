@@ -11,36 +11,29 @@ class BookmarkListPage extends StatefulWidget {
 }
 
 class _BookmarkListPageState extends State<BookmarkListPage> {
-  List<Bookmark> _bookmarks = List<Bookmark>();
-  bool dataLoaded = false;
+
+
+  getAPI() async
+  {
+    List<Bookmark> bookmarks = await Provider.of<BookmarkProvider>(context).fetchBookmark();
+    Provider.of<BookmarkProvider>(context, listen: false).setData(bookmarks);
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (!dataLoaded) {
+    getAPI();
+    if (Provider.of<BookmarkProvider>(context).isLoading()) {
       return Center(child: CircularProgressIndicator());
     }
 
     return ListView.builder(
-      itemCount: _bookmarks == null ? 0 : _bookmarks.length,
+      itemCount: Provider.of<BookmarkProvider>(context).getData().length,
       itemBuilder: (context, index) {
         return _buildListItem(index);
       },
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    Provider.of<BookmarkProvider>(context, listen: false)
-        .fetchBookmark()
-        .then((value) {
-      setState(() {
-        _bookmarks.addAll(value);
-        dataLoaded = true;
-      });
-    });
-  }
 
   _buildListItem(int index) {
     return Container(
@@ -71,8 +64,8 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            _buildTitle(_bookmarks[index].title),
-            _buildDescription(_bookmarks[index].description),
+            _buildTitle(Provider.of<BookmarkProvider>(context).getData()[index].title),
+            _buildDescription(Provider.of<BookmarkProvider>(context).getData()[index].description),
           ],
         ),
       ),
@@ -100,7 +93,7 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
         padding: EdgeInsets.only(right: 12, top: 8, bottom: 8),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: Image.network(_bookmarks[index].urlToImage,
+          child: Image.network(Provider.of<BookmarkProvider>(context).getData()[index].urlToImage,
               width: 150, height: 150, fit: BoxFit.cover),
         ));
   }
@@ -109,7 +102,7 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
     return Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => DetailScreen(bookmark: _bookmarks[index]),
+        builder: (context) => DetailScreen(bookmark: Provider.of<BookmarkProvider>(context).getData()[index]),
       ),
     );
   }

@@ -3,15 +3,12 @@ import 'package:flutter/material.dart';
 import '../data/bookmark.dart';
 
 class DetailScreen extends StatelessWidget {
-  // Declare a field that holds the Todo.
   final Bookmark bookmark;
 
-  // In the constructor, require a Todo.
   DetailScreen({Key key, @required this.bookmark}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Use the Todo to create the UI.
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
