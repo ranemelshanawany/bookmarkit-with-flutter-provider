@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import '../data/bookmark.dart';
-import '../data/BookmarkAPI.dart';
+import '../data/bookmark_api.dart';
 
 class BookmarkProvider extends ChangeNotifier {
   List<Bookmark> bookmarks = new List();

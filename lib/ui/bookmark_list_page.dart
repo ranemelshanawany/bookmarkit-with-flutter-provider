@@ -1,23 +1,23 @@
-import '../business/BookmarkProvider.dart';
+import '../business/bookmark_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../data/bookmark.dart';
-import 'ListItem.dart';
+import 'list_item.dart';
 
 class BookmarkListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    getAPI(context);
-
-    if (Provider.of<BookmarkProvider>(context).isLoading()) {
+    final BookmarkProvider bookmarkProvider = Provider.of<BookmarkProvider>(context);
+    if (bookmarkProvider.isLoading()) {
+      getAPI(context);
       return Center(child: CircularProgressIndicator());
     }
 
     return ListView.builder(
-      itemCount: Provider.of<BookmarkProvider>(context).getData().length,
+      itemCount: bookmarkProvider.getData().length,
       itemBuilder: (context, index) {
-        return ListItem.buildListItem(index, context);
+        return ListItem.buildListItem(index, context, bookmarkProvider);
       },
     );
   }

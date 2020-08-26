@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'business/BookmarkProvider.dart';
-import 'ui/BookmarkListPage.dart';
+import 'business/bookmark_provider.dart';
+import 'ui/bookmark_list_page.dart';
 
 void main() {
   runApp(MultiProvider(providers: [

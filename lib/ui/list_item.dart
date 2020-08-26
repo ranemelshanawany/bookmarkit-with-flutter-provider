@@ -1,24 +1,24 @@
-import '../business/BookmarkProvider.dart';
+import '../business/bookmark_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'DetailsScreen.dart';
+import 'details_screen.dart';
 
 class ListItem {
-  static buildListItem(int index, context) {
+  static buildListItem(int index, context, BookmarkProvider bookmarkProvider) {
     return Container(
       height: 200,
       child: Card(
           child: InkWell(
         onTap: () {
-          openNewsPage(index, context);
+          openNewsPage(index, context, bookmarkProvider);
         },
         child: IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              _buildText(index, context),
-              _buildImage(index, context),
+              _buildText(index, bookmarkProvider),
+              _buildImage(index, bookmarkProvider),
             ],
           ),
         ),
@@ -26,7 +26,7 @@ class ListItem {
     );
   }
 
-  static _buildText(int index, context) {
+  static _buildText(int index, BookmarkProvider bookmarkProvider) {
     return Expanded(
       child: Container(
         padding: EdgeInsets.all(12),
@@ -35,9 +35,8 @@ class ListItem {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             _buildTitle(
-                Provider.of<BookmarkProvider>(context).getData()[index].title),
-            _buildDescription(Provider.of<BookmarkProvider>(context)
-                .getData()[index]
+                bookmarkProvider.getData()[index].title),
+            _buildDescription(bookmarkProvider.getData()[index]
                 .description),
           ],
         ),
@@ -49,7 +48,7 @@ class ListItem {
     return Text(
       title,
       overflow: TextOverflow.ellipsis,
-      maxLines: 4,
+      maxLines: 3,
       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
     );
   }
@@ -61,14 +60,13 @@ class ListItem {
         style: TextStyle(fontSize: 15, color: Colors.grey));
   }
 
-  static _buildImage(int index, context) {
+  static _buildImage(int index, BookmarkProvider bookmarkProvider) {
     return Container(
         padding: EdgeInsets.only(right: 12, top: 8, bottom: 8),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Image.network(
-              Provider.of<BookmarkProvider>(context)
-                  .getData()[index]
+              bookmarkProvider.getData()[index]
                   .urlToImage,
               width: 150,
               height: 150,
@@ -76,12 +74,12 @@ class ListItem {
         ));
   }
 
-  static openNewsPage(int index, context) {
+  static openNewsPage(int index, context, BookmarkProvider bookmarkProvider) {
     return Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => DetailScreen(
-            bookmark: Provider.of<BookmarkProvider>(context).getData()[index]),
+            bookmark: bookmarkProvider.getData()[index]),
       ),
     );
   }
